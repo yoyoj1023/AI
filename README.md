@@ -1,2 +1,3 @@
 # AI
-My AI learning journey.
+This is a collection of web3 exploration and practice projects, documenting my learning journey from beginner level.
+
