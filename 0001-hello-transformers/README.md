@@ -4,7 +4,7 @@
 
 ## 這個程式做了什麼？
 
-`hello_pipeline.py` 的流程可以拆成三步：
+`hello_transformers.py` 的流程可以拆成三步：
 
 1. 載入情緒分析的 AI 模型。
 2. 把文字交給模型分析。
@@ -24,10 +24,10 @@
 在 PowerShell 中執行以下指令：
 
 ```powershell
-cd C:\VScode\github\AI\0001-hello-pipeline
+cd C:\VScode\github\AI\0001-hello-transformers
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-python hello_pipeline.py
+python hello_transformers.py
 ```
 
 若尚未建立 `.venv`，先執行：
@@ -55,7 +55,7 @@ deactivate
 
 ## 動手修改
 
-打開 `hello_pipeline.py`，修改傳給 `classifier` 的文字，再重新執行程式：
+打開 `hello_transformers.py`，修改傳給 `classifier` 的文字，再重新執行程式：
 
 ```python
 result = classifier("I am excited to start my AI journey!")
