@@ -55,24 +55,10 @@ Invoke-RestMethod http://localhost:11434/api/tags
 
 ### 文字生成：`POST /api/generate`
 
-適合直接對一段提示生成文字：
+適合直接對一段提示生成文字。範例會將 JSON 明確轉成 UTF-8 位元組，避免 Windows PowerShell 傳送中文時發生編碼錯誤：
 
 ```powershell
-$body = @{
-    model  = "qwen3.5:4b"
-    prompt = "用一句話解釋什麼是開源軟體。"
-    stream = $false
-} | ConvertTo-Json
-
-$request = @{
-    Uri         = "http://localhost:11434/api/generate"
-    Method      = "Post"
-    ContentType = "application/json"
-    Body        = $body
-}
-$result = Invoke-RestMethod @request
-
-$result.response
+Invoke-RestMethod -Uri "http://localhost:11434/api/generate" -Method Post -ContentType "application/json; charset=utf-8" -Body ([System.Text.Encoding]::UTF8.GetBytes((@{ model = "qwen3.5:4b"; prompt = "用一句話解釋什麼是開源軟體。"; stream = $false } | ConvertTo-Json -Compress))) | Select-Object -ExpandProperty response
 ```
 
 ### 對話生成：`POST /api/chat`
@@ -80,23 +66,7 @@ $result.response
 適合多輪對話。每次請求都傳入 `messages` 對話紀錄；若要延續上下文，需把先前的訊息一併傳入。
 
 ```powershell
-$body = @{
-    model = "qwen3.5:4b"
-    messages = @(
-        @{ role = "user"; content = "嗨！請用繁體中文簡短自我介紹。" }
-    )
-    stream = $false
-} | ConvertTo-Json -Depth 10
-
-$request = @{
-    Uri         = "http://localhost:11434/api/chat"
-    Method      = "Post"
-    ContentType = "application/json"
-    Body        = $body
-}
-$result = Invoke-RestMethod @request
-
-$result.message.content
+Invoke-RestMethod -Uri "http://localhost:11434/api/chat" -Method Post -ContentType "application/json; charset=utf-8" -Body ([System.Text.Encoding]::UTF8.GetBytes((@{ model = "qwen3.5:4b"; messages = @(@{ role = "user"; content = "嗨！請用繁體中文簡短自我介紹。" }); stream = $false } | ConvertTo-Json -Depth 10 -Compress))) | ForEach-Object { $_.message.content }
 ```
 
 ### 常用原生 API
